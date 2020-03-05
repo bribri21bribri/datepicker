@@ -1,5 +1,9 @@
 $main: #2ECEFF;
+$sub: #E4F9FF;
+
+
 button{
+  position: relative;
   border: none;
   padding: 0;
   margin: 0;
@@ -10,10 +14,20 @@ button{
   transition: .5s;
   border: 1.25px solid transparent;
   background-color: transparent;
+  min-height: 100%;
+  display: block;
   &:hover, &:focus{
     border: 1.25px solid $main;
+    background-color: #fff;
+    cursor: pointer;
   }
-
+  &:disabled {
+    background-color: #aaaaaa;
+    cursor: auto;
+    &:hover{
+      border: none;
+    }
+  }
 }
 
 
@@ -42,11 +56,15 @@ i.arrow {
   box-sizing: border-box;
   width: 23rem;
   border: 1.25px solid $main;
+  border-radius: 4px;
+  background-color: $sub;
 }
 .calendar-nav{
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
+  background-color: $main;
+  padding: .75rem;
 }
 .calendar-header,.calendar-body{
   max-width: 100%;
