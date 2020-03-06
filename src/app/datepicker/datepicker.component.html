@@ -21,7 +21,7 @@
     </div>
     <div class="calendar-body">
       <div *ngFor = "let day of gridArr" class="calendar-date" [class.is-disabled] = "!day.available">
-        <button *ngIf = "day.value !== 0" class="date-item" [disabled] = "!day.available">{{day.value}}</button>
+        <button [ngClass]="toggleSelectedClass(day)" *ngIf = "day.value !== 0" class="date-item" [disabled] = "!day.available" (click) = "selectDay(day)">{{day.value}}</button>
         <button *ngIf = "day.value === 0" class="date-item" [disabled] = "!day.available"> </button>
       </div>
     </div>

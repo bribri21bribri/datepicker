@@ -30,6 +30,11 @@ button{
   }
 }
 
+button.is-selected {
+  background-color: #fff;
+  border: 1.25px solid $main;
+}
+
 
 i {
   display: inline-block;

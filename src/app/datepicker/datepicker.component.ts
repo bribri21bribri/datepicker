@@ -15,6 +15,7 @@ export class DatepickerComponent implements OnInit {
   navDate: any;
   weekDaysHeaderArr: Array<string> = [];
   gridArr: Array<any> = [];
+  selectedDate: any;
   constructor() { }
 
   ngOnInit(): void {
@@ -43,7 +44,7 @@ export class DatepickerComponent implements OnInit {
     this.makeGrid();
   }
 
-  canChangeNavMonth(num: number){
+  canChangeNavMonth(num: number) {
     const clonedDate = moment(this.navDate);
     const minDateStart = moment(this.minDate).startOf('month');
     const maxDateStart = moment(this.maxDate).startOf('month');
@@ -93,11 +94,6 @@ export class DatepickerComponent implements OnInit {
 
   isAvailable(num: number): boolean {
     const dateToCheck = this.dateFromNum(num, this.navDate);
-    console.log('dateToCheck', dateToCheck);
-    console.log('minDate', this.minDate);
-    console.log('isBefore', dateToCheck.isSameOrBefore(this.minDate));
-    console.log('maxDate', this.maxDate);
-    console.log('isAfter', dateToCheck.isSameOrAfter(this.maxDate));
     if (dateToCheck.isSameOrBefore(this.minDate)) {
         return false;
     } else if (dateToCheck.isSameOrAfter(this.maxDate)) {
@@ -110,6 +106,21 @@ export class DatepickerComponent implements OnInit {
   dateFromNum(num: number, referenceDate: any): any {
     const returnDate = moment(referenceDate);
     return returnDate.date(num).startOf('day');
+  }
+
+  selectDay(day: any) {
+    if (day.available) {
+      this.selectedDate = this.dateFromNum(day.value, this.navDate);
+    }
+    console.log(this.selectedDate)
+  }
+
+  toggleSelectedClass(day) {
+    if (this.selectedDate && this.selectedDate.isSame(this.dateFromNum(day.value, this.navDate))) {
+      return 'is-selected';
+    } else {
+      return '';
+    }
   }
 
 }
