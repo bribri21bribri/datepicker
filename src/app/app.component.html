@@ -1,3 +1,6 @@
-<input type="text">
-
-<app-datepicker minDateString="2019-06-21" maxDateString="2020-05-05"></app-datepicker>
+<div class="container">
+  <form [formGroup]="dataForm">
+    <app-datepicker formControlName="date"  maxDateString="2020-05-05"></app-datepicker>
+    <app-address [parentform]="dataForm.get('address')"></app-address>
+  </form>
+</div>

@@ -1,0 +1,41 @@
+<form [formGroup]="parentform">
+  <div class="row">
+    <div class="form-group col-md-2 col-12">
+      <input formControlName="zip" type="text" class="form-control" placeholder="郵遞區號">
+    </div>
+    <div class="form-group col-md-2 col-12">
+      <select formControlName="county" type="text" class="form-control">
+        <option value="">請選擇</option>
+        <option *ngFor="let item of zipcodeFull | keyvalue:descOrder" [value]="item.key">{{item.key}}</option>
+      </select>
+    </div>
+    <div class="form-group col-md-2 col-12">
+      <select formControlName="district" type="text" class="form-control">
+        <option value="">請選擇</option>
+        <option *ngFor="let district of districtList | keyvalue:descOrder" [value]="district.key">{{district.key}}
+        </option>
+      </select>
+    </div>
+    <div class="form-group col-md-2 col-12">
+      <input formControlName="villageName" type="text" class="form-control" placeholder="村里名">
+    </div>
+    <div class="form-group col-md-2 col-12">
+      <select type="text" class="form-control">
+        <option value="">請選擇</option>
+        <option value="">村</option>
+        <option value="">里</option>
+      </select>
+    </div>
+    <div class="form-group col-md-2 col-12  input-group">
+      <input formControlName="village" type="text" class="form-control" placeholder="">
+      <div class="input-group-append">
+        <span class="input-group-text">
+          鄰
+        </span>
+      </div>
+    </div>
+    <div class="form-group col-md col-12">
+      <input formControlName="neighbor" type="text" class="form-control" placeholder="">
+    </div>
+  </div>
+</form>
