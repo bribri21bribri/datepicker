@@ -8,11 +8,12 @@ import { Component, OnInit, ElementRef, ViewChild, Input, Output, EventEmitter, 
 export class DatepickerSelectNavComponent implements OnInit, OnChanges{
   @Input() selectedMonth;
   @Input() selectedYear;
+  @Input() yearList;
   @Input() monthList;
   @Output() monthSelectedEvent: EventEmitter<number> = new EventEmitter();
+  @Output() yearSelectedEvent: EventEmitter<number> = new EventEmitter();
   @ViewChild('month', {static: true, read: ElementRef}) monthSelect: ElementRef;
   @ViewChild('year', {static: true, read: ElementRef}) yearSelect: ElementRef;
-  yearList = [];
   constructor() {
   }
 
@@ -24,7 +25,11 @@ export class DatepickerSelectNavComponent implements OnInit, OnChanges{
 
   onMonthSelect(event) {
     const monthNum = event.target.value;
-    this.monthSelectedEvent.emit(monthNum);
+    this.monthSelectedEvent.emit(+monthNum);
+  }
+  onYearSelect(event) {
+    const yearNum = event.target.value;
+    this.yearSelectedEvent.emit(+yearNum);
   }
 
 }

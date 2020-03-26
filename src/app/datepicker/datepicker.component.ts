@@ -42,7 +42,10 @@ export class DatepickerComponent implements OnInit, ControlValueAccessor {
     if (value) {
       this.navDate = moment(value).startOf('day');
       this.selectedDate = moment(this.navDate).startOf('day');
+      this.selectedYear = this.selectedDate.year();
       this.selectedMonth = this.selectedDate.month();
+      this.makeMonthList();
+      this.makeYearList();
     }
   }
   registerOnChange(fn: any): void {
@@ -59,6 +62,7 @@ export class DatepickerComponent implements OnInit, ControlValueAccessor {
     moment.locale(this.localeString);
     this.navDate = moment().startOf('day');
     this.selectedDate = moment(this.navDate).startOf('day');
+    this.selectedYear = this.selectedDate.year();
     this.selectedMonth = this.selectedDate.month();
     if (this.minDateString) {
       this.minDate = moment(this.minDateString);
@@ -73,6 +77,7 @@ export class DatepickerComponent implements OnInit, ControlValueAccessor {
       }
     }
     this.makeMonthList();
+    this.makeYearList();
     this.makeHeader();
     this.makeGrid();
   }
@@ -81,7 +86,8 @@ export class DatepickerComponent implements OnInit, ControlValueAccessor {
     if (this.canChangeNavMonth(num)) {
       this.navDate.add(num, 'month');
     }
-    this.selectedMonth = this.selectedMonth + num;
+    this.selectedMonth = this.navDate.month();
+    this.selectedYear = this.navDate.year();
     if (this.selectedMonth > 11) {
       this.selectedMonth = 0;
     } else if (this.selectedMonth < 0) {
@@ -91,8 +97,41 @@ export class DatepickerComponent implements OnInit, ControlValueAccessor {
     this.makeGrid();
   }
 
-  onNavMonthSelect(event) {
-    this.navDate.month(event);
+  onNavMonthSelect(monthNum) {
+    this.selectedMonth = monthNum;
+    this.navDate.month(monthNum);
+    this.makeGrid();
+  }
+
+  onNavYearSelect(yearNum) {
+    this.selectedYear = yearNum;
+    this.navDate.year(yearNum);
+    const clonedDate = moment(this.navDate);
+    const minDateStart = moment(this.minDate).startOf('month');
+    const maxDateStart = moment(this.maxDate).startOf('month');
+    const maxDateEnd = moment(this.maxDate).endOf('month');
+    if (this.minDate && !this.maxDate) {
+      if (clonedDate.endOf('month').isBefore(minDateStart)) {
+        this.navDate.month(this.minDate.month());
+        this.selectedMonth = this.minDate.month();
+      }
+    } else if (this.maxDate && !this.minDate) {
+      if (clonedDate.startOf('month').isAfter(maxDateEnd)) {
+        this.navDate.month(this.maxDate.month());
+        this.selectedMonth = this.maxDate.month();
+      }
+    } else if (this.minDate && this.maxDate) {
+      if (clonedDate.endOf('month').isBefore(minDateStart)) {
+        this.navDate.month(this.minDate.month());
+        this.selectedMonth = this.minDate.month();
+      }
+      if (clonedDate.startOf('month').isAfter(maxDateEnd)) {
+        this.navDate.month(this.maxDate.month());
+        this.selectedMonth = this.maxDate.month();
+      }
+    }
+    this.makeYearList();
+    this.makeMonthList();
     this.makeGrid();
   }
 
@@ -150,6 +189,40 @@ export class DatepickerComponent implements OnInit, ControlValueAccessor {
     this.monthList = returnList;
   }
 
+  makeYearList() {
+    const clonedDate1 = moment(this.navDate);
+    const clonedDate2 = moment(this.navDate);
+    const minDateStart = moment(this.minDate).startOf('year');
+    const maxDateStart = moment(this.maxDate).startOf('year');
+    const returnList = [this.navDate.year()];
+    for (let i = 1; i <= 20; i++) {
+      clonedDate1.add(1, 'year');
+      clonedDate2.subtract(1, 'year');
+      if (this.minDate && !this.maxDate) {
+        if (clonedDate2.startOf('year').isSameOrAfter(minDateStart)) {
+          returnList.unshift(clonedDate2.year());
+        }
+        returnList.push(clonedDate1.year());
+      } else if (this.maxDate && !this.minDate) {
+        if (clonedDate1.startOf('year').isSameOrBefore(maxDateStart)) {
+          returnList.push(clonedDate1.year());
+        }
+        returnList.unshift(clonedDate2.year());
+      } else if (this.minDate && this.maxDate) {
+        if (clonedDate2.startOf('year').isSameOrAfter(minDateStart)) {
+          returnList.unshift(clonedDate2.year());
+        }
+        if (clonedDate1.startOf('year').isSameOrBefore(maxDateStart)) {
+          returnList.push(clonedDate1.year());
+        }
+      } else {
+        returnList.push(clonedDate1.year());
+        returnList.unshift(clonedDate2.year());
+      }
+    }
+    this.yearList = returnList;
+  }
+
   makeGrid() {
     this.gridArr = [];
 
@@ -192,6 +265,7 @@ export class DatepickerComponent implements OnInit, ControlValueAccessor {
   selectDay(day: any) {
     if (day.available) {
       this.selectedDate = this.dateFromNum(day.value, this.navDate);
+      this.selectedYear = this.selectedDate.year();
       this.selectedMonth = this.selectedDate.month();
       this.showCalendar = false;
       this.value = this.selectedDate.format('YYYY-MM-DD');

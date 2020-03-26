@@ -1,6 +1,6 @@
 <div class="container">
   <form [formGroup]="dataForm">
-    <app-datepicker formControlName="date"  maxDateString="2020-05-05"></app-datepicker>
+    <app-datepicker formControlName="date" minDateString="1998-10-21" ></app-datepicker>
     <app-address [parentform]="dataForm.get('address')"></app-address>
   </form>
 </div>

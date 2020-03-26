@@ -6,7 +6,7 @@
         <i class="arrow arrow-left"></i>
       </button>
     </div>
-    <app-datepicker-select-nav class="col" [monthList]="monthList" [selectedMonth]="selectedMonth" (monthSelectedEvent)="onNavMonthSelect($event)"></app-datepicker-select-nav>
+    <app-datepicker-select-nav class="col" [monthList]="monthList" [yearList]="yearList" [selectedMonth]="selectedMonth" [selectedYear]="selectedYear" (monthSelectedEvent)="onNavMonthSelect($event)" (yearSelectedEvent)="onNavYearSelect($event)"></app-datepicker-select-nav>
     <div class="nav-month col-2">
       <button class="button is-text" (click) = "changeNavMonth(1)" [disabled] = "!canChangeNavMonth(1)">
         <i class="arrow arrow-right"></i>

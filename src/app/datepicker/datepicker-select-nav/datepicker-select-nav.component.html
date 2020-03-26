@@ -1,11 +1,11 @@
 <div class="row justify-content-center mx-0">
   <div class="col-6 px-0">
     <!-- {{navDate.format('YYYY')}} -->
-    <select class="custom-select custom-select-sm">
-      <option *ngFor="let item of monthList" value="i">ts</option>
+    <select class="custom-select custom-select-sm" (change)="onYearSelect($event)">
+      <option *ngFor="let item of yearList" [value]="item" [selected]="item === selectedYear">{{item}}</option>
     </select>
   </div>
-  <div class="col-4 px-0">
+  <div class="col-6 px-0">
     <select class="custom-select custom-select-sm" (change)="onMonthSelect($event)">
       <option *ngFor="let item of monthList; let i = index" [value]="item.value" [selected]="item.value === selectedMonth">{{item.name}}</option>
     </select>
